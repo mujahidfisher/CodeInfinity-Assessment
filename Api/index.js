@@ -15,7 +15,7 @@ app.listen(PORT, () => {
 //All Users
 app.get("/users", async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find().maxTimeMS(30000);
     res.status(200).json(users);
     console.log("All users:", users);
   } catch (error) {
@@ -24,12 +24,12 @@ app.get("/users", async (req, res) => {
   }
 });
 
-
 //Single User
 app.get("/user/:id", (req, res) => {
   const { id } = req.params;
   if (ObjectId.isValid(req.params.id)) {
-      User.findOne({ _id: new ObjectId(id) })
+    User.findOne({ _id: new ObjectId(id) })
+      .maxTimeMS(30000)
       .then((doc) => {
         res.status(200).json(doc);
       })
@@ -41,7 +41,6 @@ app.get("/user/:id", (req, res) => {
   }
 });
 
-
 //Register a user
 app.post("/register", async (req, res) => {
   try {
@@ -52,7 +51,7 @@ app.post("/register", async (req, res) => {
         firstName,
         lastName,
       },
-    });
+    }).maxTimeMS(30000);
 
     const savedUser = await newUser.save();
 
@@ -63,12 +62,12 @@ app.post("/register", async (req, res) => {
   }
 });
 
-
 //Delete a user
 app.delete("/delete/:id", (req, res) => {
   const { id } = req.params;
   if (ObjectId.isValid(req.params.id)) {
-      User.deleteOne({ _id: new ObjectId(id) })
+    User.deleteOne({ _id: new ObjectId(id) })
+      .maxTimeMS(30000)
       .then((result) => {
         res.status(200).json(result);
       })
@@ -79,4 +78,3 @@ app.delete("/delete/:id", (req, res) => {
     res.status(500).json({ error: "Not a valid data id" });
   }
 });
-
