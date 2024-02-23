@@ -6,7 +6,7 @@ const Api = ""
 
 export default createStore({
   state: {
-    
+
   },
   getters: {
   },
