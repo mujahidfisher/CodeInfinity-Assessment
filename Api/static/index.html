@@ -8,5 +8,46 @@
   </head>
   <body>
     <h1>Api Server</h1>
+    <h2>User Registration</h2>
+
+    <form id="registrationForm">
+      <label for="firstName">First Name:</label><br />
+      <input type="text" id="firstName" name="firstName" /><br />
+      <label for="lastName">Last Name:</label><br />
+      <input type="text" id="lastName" name="lastName" /><br /><br />
+      <button type="submit">Register</button>
+    </form>
+
+    <script>
+      document
+        .getElementById("registrationForm")
+        .addEventListener("submit", async function (event) {
+          event.preventDefault();
+
+          const firstName = document.getElementById("firstName").value;
+          const lastName = document.getElementById("lastName").value;
+
+          try {
+            const response = await fetch("/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ firstName, lastName }),
+            });
+
+            if (!response.ok) {
+              throw new Error("Failed to register user");
+            }
+
+            const data = await response.json();
+            console.log("User registered successfully:", data);
+            alert("User registered successfully!");
+          } catch (error) {
+            console.error("Error registering user:", error);
+            alert("Failed to register user. Please try again.");
+          }
+        });
+    </script>
   </body>
 </html>
