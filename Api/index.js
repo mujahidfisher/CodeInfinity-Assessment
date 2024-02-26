@@ -51,7 +51,7 @@ app.post("/register", async (req, res) => {
         firstName,
         lastName,
       },
-    }).maxTimeMS(30000);
+    });
 
     const savedUser = await newUser.save();
 
