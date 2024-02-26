@@ -83,7 +83,7 @@ const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
 const connectDB = require("./config/connectDB");
-const User = require("./models/User");
+const User = require("./config/connectDB");
 const { ObjectId } = require("mongodb");
 
 // Connect to MongoDB
