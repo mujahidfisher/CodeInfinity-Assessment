@@ -15,8 +15,8 @@ app.listen(PORT, () => {
 //All Users
 app.get("/users", async (req, res) => {
   try {
-    const users = await User.find().maxTimeMS(30000);
-    res.status(200).json(users);
+    const users = await User.find();
+    res.status(200).json({users});
     console.log("All users:", users);
   } catch (error) {
     console.error("Error fetching users:", error);
