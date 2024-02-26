@@ -82,12 +82,12 @@
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
-const connectDB = require("./config/connectDB");
+require("./models/route");
 const User = require("./config/connectDB");
+require("./config/connectDB");
 const { ObjectId } = require("mongodb");
 
 // Connect to MongoDB
-connectDB();
 
 // Middleware
 app.use(express.static("./static"));
