@@ -1,14 +1,70 @@
+@import url("https://fonts.googleapis.com/css2?family=Cairo&family=Roboto+Mono&family=Ubuntu&display=swap");
+
 *,
 *::before,
 *::after {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  font-family: "Ubuntu", sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 body {
-  margin-top: 10rem;
+  background-image: url("https://i.postimg.cc/yN16Th1d/colorful-abstract-nebula-space-background.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-size: 100% 100%;
+  color: white;
   font-size: x-large;
   text-align: center;
-  background-color: rgb(122, 169, 137);
+}
+
+.heading1 {
+  margin: 5px;
+}
+
+.heading2 {
+  margin: 5px;
+}
+
+.heading3 {
+  margin: 5px;
+}
+
+.display {
+  padding: 10px;
+  background-image: linear-gradient(rgb(27, 27, 27), rgb(75, 75, 75));
+  border: 2px white solid;
+  text-decoration: none;
+  margin: 0 30rem;
+  list-style-type: none;
+}
+
+.form-inputs {
+  display: flex;
+  flex-direction: column;
+  border: 2px white solid;
+  background-image: linear-gradient(rgb(33, 33, 33), rgb(153, 153, 153));
+  margin: 0 30rem;
+  align-items: center;
+}
+
+.input-heading {
+  padding: 5px;
+}
+
+.input-body {
+  padding: 5px;
+  font-size: 18px;
+  background-color: black;
+  color: white;
+}
+
+.confirm-btn {
+  padding: 5px;
+  width: 10rem;
+  background-color: brown;
+  color: white;
+  margin: 20px;
 }

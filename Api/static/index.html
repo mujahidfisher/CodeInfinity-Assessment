@@ -7,25 +7,41 @@
     <title>Api Server</title>
   </head>
   <body>
-    <h2>All Users</h2>
-    <ul id="userList"></ul>
+    <h1 class="heading1">Codeinfinity Assessment</h1>
+    <h2 class="heading2">All Users:</h2>
+    <ul class="display" id="userList"></ul>
 
-    <h2>Register New User</h2>
-    <form id="registerForm">
-      <label for="firstName">Name:</label>
-      <input type="text" id="firstName" name="firstName" required />
-      <label for="lastName">Surname:</label>
-      <input type="text" id="lastName" name="lastName" required />
-      <label for="idNumber">ID Number:</label>
+    <h2 class="heading3">Register New User:</h2>
+    <form class="form-inputs" id="registerForm">
+      <label class="input-heading" for="firstName">Name:</label>
       <input
+        class="input-body"
+        type="text"
+        id="firstName"
+        name="firstName"
+        required
+      />
+      <label class="input-heading" for="lastName">Surname:</label>
+      <input
+        class="input-body"
+        type="text"
+        id="lastName"
+        name="lastName"
+        required
+      />
+      <label class="input-heading" for="idNumber">ID Number:</label>
+      <input
+        class="input-body"
         type="text"
         id="idNumber"
         name="idNumber"
         required
         oninput="fillDOB()"
+        maxlength="13"
       />
-      <label for="dob">Date of Birth (dd/mm/yyyy):</label>
+      <label class="input-heading" for="dob">Date of Birth:</label>
       <input
+        class="input-body"
         type="text"
         id="dob"
         name="dob"
@@ -33,9 +49,9 @@
         placeholder="dd/mm/yyyy"
         required
       />
-      <button type="submit">Register</button>
+      <button class="confirm-btn" id="registerBtn" type="submit">Register</button>
+      <div id="loadingIndicator" style="display: none">Loading...</div>
     </form>
-
     <script>
       async function fetchUsers() {
         try {
@@ -58,26 +74,41 @@
 
       async function registerUser(event) {
         event.preventDefault();
-        try {
-          const firstName = document.getElementById("firstName").value;
-          const lastName = document.getElementById("lastName").value;
-          const idNumber = document.getElementById("idNumber").value;
-          const dob = document.getElementById("dob").value;
-          const response = await fetch("/register", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ firstName, lastName, idNumber, dob }),
-          });
-          if (!response.ok) {
-            throw new Error("Failed to register user");
+        const loadingIndicator = document.getElementById("loadingIndicator");
+        const registerBtn = document.getElementById("registerBtn");
+        loadingIndicator.style.display = "block";
+        registerBtn.style.display = "none";
+
+        setTimeout(async () => {
+          try {
+            const firstName = document.getElementById("firstName").value;
+            const lastName = document.getElementById("lastName").value;
+            const idNumber = document.getElementById("idNumber").value;
+            const dob = document.getElementById("dob").value;
+            const response = await fetch("/register", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ firstName, lastName, idNumber, dob }),
+            });
+            if (!response.ok) {
+              throw new Error("Failed to register user/ID was attempted to be duplicated");
+            }
+            const confirmed = confirm(
+              "User registered successfully! Do you want to continue?"
+            );
+            if (confirmed) {
+              fetchUsers();
+            }
+          } catch (error) {
+            console.error(error);
+            alert(error.message);
+          } finally {
+            loadingIndicator.style.display = "none";
+            registerBtn.style.display = "block";
           }
-          fetchUsers();
-        } catch (error) {
-          console.error(error);
-          alert(error.message);
-        }
+        }, 2000);
       }
 
       document
