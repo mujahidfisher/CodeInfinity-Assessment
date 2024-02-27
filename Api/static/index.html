@@ -7,66 +7,100 @@
     <title>Api Server</title>
   </head>
   <body>
-    <h1>Api Server</h1>
-    <h2>User Registration</h2>
-
     <h2>All Users</h2>
     <ul id="userList"></ul>
 
     <h2>Register New User</h2>
     <form id="registerForm">
-      <label for="firstName">First Name:</label>
-      <input type="text" id="firstName" name="firstName" />
-      <label for="lastName">Last Name:</label>
-      <input type="text" id="lastName" name="lastName" />
+      <label for="firstName">Name:</label>
+      <input type="text" id="firstName" name="firstName" required />
+      <label for="lastName">Surname:</label>
+      <input type="text" id="lastName" name="lastName" required />
+      <label for="idNumber">ID Number:</label>
+      <input
+        type="text"
+        id="idNumber"
+        name="idNumber"
+        required
+        oninput="fillDOB()"
+      />
+      <label for="dob">Date of Birth (dd/mm/yyyy):</label>
+      <input
+        type="text"
+        id="dob"
+        name="dob"
+        pattern="\d{2}/\d{2}/\d{4}"
+        placeholder="dd/mm/yyyy"
+        required
+      />
       <button type="submit">Register</button>
     </form>
 
     <script>
       async function fetchUsers() {
-            try {
-                const response = await fetch('/users');
-                if (!response.ok) {
-                    throw new Error('Failed to fetch users');
-                }
-                const data = await response.json();
-                const userList = document.getElementById('userList');
-                userList.innerHTML = '';
-                data.users.forEach(user => {
-                    const li = document.createElement('li');
-                    li.textContent = `${user.name.firstName} ${user.name.lastName}`;
-                    userList.appendChild(li);
-                });
-            } catch (error) {
-                console.error(error);
-            }
+        try {
+          const response = await fetch("/users");
+          if (!response.ok) {
+            throw new Error("Failed to fetch users");
+          }
+          const data = await response.json();
+          const userList = document.getElementById("userList");
+          userList.innerHTML = "";
+          data.users.forEach((user) => {
+            const li = document.createElement("li");
+            li.textContent = `${user.name.firstName} ${user.name.lastName} (${user.idNumber})`;
+            userList.appendChild(li);
+          });
+        } catch (error) {
+          console.error(error);
         }
+      }
 
-        async function registerUser(event) {
-            event.preventDefault();
-            try {
-                const firstName = document.getElementById('firstName').value;
-                const lastName = document.getElementById('lastName').value;
-                const response = await fetch('/register', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ firstName, lastName })
-                });
-                if (!response.ok) {
-                    throw new Error('Failed to register user');
-                }
-                fetchUsers();
-            } catch (error) {
-                console.error(error);
-                alert(error.message);
-            }
+      async function registerUser(event) {
+        event.preventDefault();
+        try {
+          const firstName = document.getElementById("firstName").value;
+          const lastName = document.getElementById("lastName").value;
+          const idNumber = document.getElementById("idNumber").value;
+          const dob = document.getElementById("dob").value;
+          const response = await fetch("/register", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ firstName, lastName, idNumber, dob }),
+          });
+          if (!response.ok) {
+            throw new Error("Failed to register user");
+          }
+          fetchUsers();
+        } catch (error) {
+          console.error(error);
+          alert(error.message);
         }
+      }
 
-        document.getElementById('registerForm').addEventListener('submit', registerUser);
+      document
+        .getElementById("registerForm")
+        .addEventListener("submit", registerUser);
 
-        fetchUsers();
+      fetchUsers();
+
+      function fillDOB() {
+        const idNumberInput = document.getElementById("idNumber");
+        const dobInput = document.getElementById("dob");
+
+        const idNumberValue = idNumberInput.value;
+        if (idNumberValue.length >= 6) {
+          const day = idNumberValue.substring(4, 6);
+          const month = idNumberValue.substring(2, 4);
+          const year = "20" + idNumberValue.substring(0, 2);
+
+          dobInput.value = `${day}/${month}/${year}`;
+        } else {
+          dobInput.value = "";
+        }
+      }
     </script>
   </body>
 </html>
