@@ -4,9 +4,11 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./style.css" />
-    <title>Api Server</title>
+    <title>CodeInfinity Test</title>
   </head>
   <body>
+
+    <!-- frontend form -->
     <h1 class="heading1">Codeinfinity Assessment</h1>
     <h2 class="heading2">All Users:</h2>
     <ul class="display" id="userList"></ul>
@@ -53,6 +55,7 @@
       <div id="loadingIndicator" style="display: none">Loading...</div>
     </form>
     <script>
+      // Function for frontend
       async function fetchUsers() {
         try {
           const response = await fetch("/users");

@@ -1,12 +1,14 @@
+// node packages import
 const express = require("express");
 const app = express();
 const PORT = process.env.PORT || 3000;
-require("./models/route");
-require("./config/connectDB");
-const User = require("./config/connectDB");
+require("./models/connectDB");
+require("./config/route");
+const User = require("./models/connectDB");
 
 app.use(express.static("./static"), express.json());
 
+// PORT
 app.listen(PORT, () => {
   console.log(`The server is running on port : ${PORT} 👌`);
 });
